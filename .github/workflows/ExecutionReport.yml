@@ -1,22 +1,35 @@
-name: Parallel Tests
+name: Generate Cypress Report
 on: [push]
+
 jobs:
-  cypress-run:
-    runs-on: ubuntu-16.04
-    strategy:
-      fail-fast: false
-      matrix:
-        # run 3 copies of the current job in parallel
-        containers: [1, 2]
+  cypress-test:
+    name: Run on Chrome 83
+    runs-on: ubuntu-18.04
+    container: cypress/browsers:node12.18.0-chrome83-ff77
     steps:
-      - uses: actions/checkout@v1
-      - uses: cypress-io/github-action@v1
+      - uses: actions/checkout@v2
+
+      - name: Install cypress and verify
+        run: |
+          npm ci
+          $(npm bin)/cypress verify
+      - name: Run Cypress tests
+        run: npm run test:chrome
+        continue-on-error: true
+
+      - name: Copy test execution videos and screenshots
+        run: |
+          mkdir public
+          cp -r cypress/videos public/videos
+          cp -r cypress/screenshots public/screenshots
+      - name: Merge test reports
+        run: npm run combine:report
+
+      - name: Generate HTML report
+        run: npm run generate:report
+      
+      - name: Deploy report page to GitHub Page
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          # browser: chrome
-          parallel: true
-          headless: true
-          record: true
-        env:
-          # pass the Dashboard record key as an environment variable
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
