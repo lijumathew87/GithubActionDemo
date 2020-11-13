@@ -1,10 +1,8 @@
 {
   "baseUrl": "https://shoeshoprunning.fittedrunning.com/",
-  "reporter": "junit",
-  "reporterOptions": {
-    overwrite": false,
+ "reporterOptions": {
+        "overwrite": false,
         "html": false,
         "json": true
-  },
-  "chromeWebSecurity": false
+    }
 }
