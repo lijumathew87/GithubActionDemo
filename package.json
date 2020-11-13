@@ -4,6 +4,7 @@
   "description": "An example for Cypress and Cucumber usage",
   "main": "index.js",
   "scripts": {
+    "test": "cypress run",
     "cypress:open:local": "CYPRESS_ENV=localhost npm run cypress:open",
     "cypress:open:prod": "CYPRESS_ENV=production npm run cypress:open",
     "cypress:open": "cypress open",
