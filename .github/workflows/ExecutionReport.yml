@@ -12,7 +12,7 @@ jobs:
         run: npm install --save-dev cypress-cucumber-preprocessor
         
       - name: Run Cypress tests
-        run: npm run test:chrome
+        run: npm run test:prod
         continue-on-error: true
         
       - name: Copy test execution videos and screenshots
