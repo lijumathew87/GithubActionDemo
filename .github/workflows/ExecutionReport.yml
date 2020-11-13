@@ -11,7 +11,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: installation
-        run: npm install cypress
+        run: npm install --save-dev cypress-cucumber-preprocessor
         
       - name: installation2
         run: npm install
