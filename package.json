@@ -9,9 +9,10 @@
     "cypress:open": "cypress open",
     
     "test:prod": "CYPRESS_ENV=production npm run test",
-    "test": "cypress run --env TAGS='@e2e-test' --spec 'cypress/integration/**/*.feature'",
-    "test:debug:prod": "CYPRESS_ENV=production npm run test:debug",
-    "test:debug": "cypress run --headed --browser chrome --env TAGS='@e2e-test' --spec 'cypress/integration/**/*.feature'"
+     "test:chrome": "cypress run --browser chrome",
+     "combine:report": "mochawesome-merge ./mochawesome-report/*.json -o index.json",
+     "generate:report": "marge index.json --reportDir public --assetsDir public/assets --reportPageTitle index.html"
+    
   },
   
   "cypress-cucumber-preprocessor": {
