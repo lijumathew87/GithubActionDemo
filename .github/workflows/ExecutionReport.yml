@@ -1,37 +1,32 @@
 name: Generate Cypress Report
 on: [push]
-
 jobs:
   cypress-test:
-    name: Run on Chrome 83
+    name: Run on Chrome 86
     runs-on: ubuntu-18.04
-    container: cypress/browsers:node12.18.0-chrome83-ff77
+    container: 'cypress/browsers:node12.19.0-chrome86-ff82'
     steps:
       - uses: actions/checkout@v2
-        
       - name: Install cypress
-        run: npm install --save-dev cypress-cucumber-preprocessor
-        
-      - name: Install cypress plugin
-        run: npm install fs-extra
-          
+        run: |
+          npm ci
+          $(npm bin)/cypress cache path
+          $(npm bin)/cypress cache list
+          $(npm bin)/cypress verify
       - name: Run Cypress tests
-        run: npm run test:chrome
+        run: 'npm run test:chrome'
         continue-on-error: true
-
       - name: Copy test execution videos and screenshots
         run: |
           mkdir public
           cp -r cypress/videos public/videos
           cp -r cypress/screenshots public/screenshots
       - name: Merge test reports
-        run: npm run combine:report
-
+        run: 'npm run combine:report'
       - name: Generate HTML report
-        run: npm run generate:report
-      
+        run: 'npm run generate:report'
       - name: Deploy report page to GitHub Page
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: '${{ secrets.GITHUB_TOKEN }}'
           publish_dir: ./public
